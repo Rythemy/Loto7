@@ -137,13 +137,27 @@ public class Loto7 {
 	}
 	
 	public void match() {
-		if (yourNumber.equals(houseNumber)) {
-			System.out.println("Congratulations! You won!");
+		houseNumber.retainAll(yourNumber);
+		System.out.print("You have matched total of " + houseNumber.size() + " numbers: ");
+		System.out.println(houseNumber);
+		if (houseNumber.size() == 6) {
+			System.out.println("Congratulations! You won first prize of $6,000,000!");
+		}
+		else if (houseNumber.size() == 5) {
+			System.out.println("Congratulations! You won second prize of $72,800!");
+		}
+		else if (houseNumber.size() == 4) {
+			System.out.println("Congratulations! You won third prize of $7,280!");
+		}
+		else if (houseNumber.size() == 3) {
+			System.out.println("Congratulations! You won fourth prize of $91!");
+		}
+		else if (houseNumber.size() == 2) {
+			System.out.println("Congratulations! You won fifth prize of $14!");
 		}
 		else {
 			System.out.println("Sorry! Better luck next time!");
 			System.out.println("Thank you for playing Loto 7.");
 		}
-	
 	}
 }
