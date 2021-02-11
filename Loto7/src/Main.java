@@ -1,5 +1,5 @@
 // Loto 7
-// Version 1.1
+// Version 1.2
 
 import java.util.Scanner;
 
@@ -11,8 +11,11 @@ public class Main {
 		 
 		 loto7.welcome();
 		 loto7.inputChoice(scan);
+		 loto7.outputYourNumber();
 		 loto7.draw();
+		 loto7.outputHouseNumber();
 		 loto7.match();
 	 }
 }
+
 

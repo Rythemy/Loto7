@@ -1,11 +1,11 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Loto7 {
-	public int yourNumber[] = new int[7];
-	public int houseNumber[] = new int[7];
-	final static int UPPER_BOUND = 37;
-	static boolean repeat = true;
+	public ArrayList yourNumber = new ArrayList();
+	public ArrayList houseNumber = new ArrayList();
+	final static int UPPER_BOUND = 36;
 	
 	Random rand = new Random();
 	
@@ -21,7 +21,7 @@ public class Loto7 {
 		System.out.println("Do you want to choose 7 numbers by yourself or have the program generate them?");
 		System.out.println("1. I will choose them by myself");
 		System.out.println("2. Please choose them for me");		
-		
+		boolean repeat = true;
 		do {
 			try {
 				int choice = scan.nextInt();
@@ -34,7 +34,8 @@ public class Loto7 {
 					repeat = false;
 				}
 				if (choice == 2) {
-					this.generateNumbers();
+					this.generateYourNumber();
+					this.generateHouseNumber();
 					repeat = false;
 				}
 			} catch (Exception e) {
@@ -43,64 +44,96 @@ public class Loto7 {
 				repeat = true;
 			}
 		} while (repeat);
-		this.outputNumbers();
 	}
 	
 	public void inputNumbers(Scanner scan) {
+		boolean repeat = true;
 		System.out.println("Excellent! Please enter your own 7 numbers, separated by space: ");
 		while (repeat) {
 			try {
-				for (int i = 0; i < yourNumber.length; i++) {
-					yourNumber[i] = scan.nextInt();
-				}
-				repeat = false;
+				for (int i = 0; i < 7; i++) {
+					System.out.println(i);
+					int input = scan.nextInt();
+					if (input >0 && input <=37 && !yourNumber.contains(input)) {
+						yourNumber.add(input);
+					} else if (input <=0 || input >37){
+						System.out.println("Please enter a number between 1-37.");
+						repeat = true;
+						i--;
+						scan.nextLine();
+					} else if (yourNumber.contains(input)) {
+						System.out.println("Number already chose, please choose another number.");
+						repeat = true;
+						i--;
+						scan.nextLine();
+					}
+				} repeat = false;
 			} catch (Exception e) {
 				System.out.print("There's an error: " + e + "\n");
 				System.out.println("Please try again.");
-				scan.nextLine();
 				repeat = true;
+				scan.nextLine();
 			}
 		}
+		yourNumber.sort(null);
 	}
 	
-	
-	public void generateNumbers() {
+	public void generateYourNumber() {
+		boolean repeat = true;
 		System.out.println("Good idea! We will prepare the numbers for you.");	
-			for (int i = 0; i < yourNumber.length; i++) {
-				yourNumber[i] = rand.nextInt(UPPER_BOUND);
-			}
+		while (repeat) {
+			for (int i = 0; i < 7; i++) {
+					int random = rand.nextInt(UPPER_BOUND) + 1;
+					if (!yourNumber.contains(random)) {
+						yourNumber.add(random);
+					} else {
+						i--;
+						repeat = true;
+					}
+				} repeat = false; 
+		}
+		yourNumber.sort(null);
 	}
 	
-	public void outputNumbers() {
-		System.out.println("Your numbers are: ");
-		System.out.print(yourNumber[0]);
-		for (int i = 1; i < yourNumber.length; i++) {
-			System.out.print(", " + yourNumber[i]);
+	public void generateHouseNumber() {
+		boolean repeat = true;
+		while (repeat) {
+			for (int i = 0; i < 7; i++) {
+					int random = rand.nextInt(UPPER_BOUND) + 1;
+					if (!houseNumber.contains(random)) {
+						houseNumber.add(random);
+					} else {
+						i--;
+						repeat = true;
+					}
+				} repeat = false; 
 		}
+		houseNumber.sort(null);
+	}
+	
+	
+	public void outputYourNumber() {
+		System.out.println("Your numbers are: ");
+		System.out.println(yourNumber);
+		System.out.println("");
+	}
+	
+	public void outputHouseNumber() {
+		System.out.println("...And the winner numbers are: ");
+		System.out.println(houseNumber);
 		System.out.println("");
 	}
 	
 	public void draw() throws InterruptedException {
-		 Thread.sleep(1000);
-		 System.out.println("Now's the time for the drawing!");
-		 Thread.sleep(1000);
-		 System.out.println("3");
-		 Thread.sleep(1000);
-		 System.out.println("2");
-		 Thread.sleep(1000);
-		 System.out.println("1");
-		for (int i = 0; i < houseNumber.length; i++) {
-			houseNumber[i] = rand.nextInt(UPPER_BOUND);
-		}
-		
-		System.out.printf("...and the winner numbers are: \n");
 		Thread.sleep(1000);
-		System.out.print(houseNumber[0]);
-		for (int i = 1; i < houseNumber.length; i++) {
-			System.out.print(", "+ houseNumber[i]);
-		}
-		System.out.println("");	
-		Thread.sleep(2000);
+		System.out.println("Now's the time for the drawing!");
+		Thread.sleep(1000);
+		System.out.println("3");
+		Thread.sleep(1000);
+		System.out.println("2");
+		Thread.sleep(1000);
+		System.out.println("1");
+		Thread.sleep(1000);
 	}
 	
 	public void match() {
@@ -109,6 +142,7 @@ public class Loto7 {
 		}
 		else {
 			System.out.println("Sorry! Better luck next time!");
+			System.out.println("Thank you for playing Loto 7.");
 		}
 	
 	}
