@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Loto7 {
-	public ArrayList yourNumber = new ArrayList();
-	public ArrayList houseNumber = new ArrayList();
+	ArrayList yourNumber = new ArrayList();
+	ArrayList houseNumber = new ArrayList();
 	final static int UPPER_BOUND = 36;
 	
 	Random rand = new Random();
@@ -12,7 +12,7 @@ public class Loto7 {
 	public void welcome () {
 		 System.out.println("Hello. Welcome to Loto 7.");
 		 System.out.println("Please choose seven 1-digit numbers. You can also have the program generating the numbers for you.");
-		 System.out.println("If all of your numbers match the winning numbers, you win the prize of 100,000 points!");
+		 System.out.println("You will win prizes base on how many numbers you get it right. The highest prize will be $6,000,000!");
 		 System.out.println("");
 	}
 	
@@ -31,6 +31,7 @@ public class Loto7 {
 	            }
 				if (choice == 1) {
 					this.inputNumbers(scan);
+					this.generateHouseNumber();
 					repeat = false;
 				}
 				if (choice == 2) {
@@ -44,15 +45,15 @@ public class Loto7 {
 				repeat = true;
 			}
 		} while (repeat);
+		scan.close();
 	}
 	
 	public void inputNumbers(Scanner scan) {
 		boolean repeat = true;
 		System.out.println("Excellent! Please enter your own 7 numbers, separated by space: ");
-		while (repeat) {
+		do {
 			try {
 				for (int i = 0; i < 7; i++) {
-					System.out.println(i);
 					int input = scan.nextInt();
 					if (input >0 && input <=37 && !yourNumber.contains(input)) {
 						yourNumber.add(input);
@@ -74,14 +75,14 @@ public class Loto7 {
 				repeat = true;
 				scan.nextLine();
 			}
-		}
+		} while (repeat);
 		yourNumber.sort(null);
 	}
 	
 	public void generateYourNumber() {
 		boolean repeat = true;
 		System.out.println("Good idea! We will prepare the numbers for you.");	
-		while (repeat) {
+		do {
 			for (int i = 0; i < 7; i++) {
 					int random = rand.nextInt(UPPER_BOUND) + 1;
 					if (!yourNumber.contains(random)) {
@@ -91,13 +92,13 @@ public class Loto7 {
 						repeat = true;
 					}
 				} repeat = false; 
-		}
+		} while (repeat);
 		yourNumber.sort(null);
 	}
 	
 	public void generateHouseNumber() {
 		boolean repeat = true;
-		while (repeat) {
+		do {
 			for (int i = 0; i < 7; i++) {
 					int random = rand.nextInt(UPPER_BOUND) + 1;
 					if (!houseNumber.contains(random)) {
@@ -107,7 +108,7 @@ public class Loto7 {
 						repeat = true;
 					}
 				} repeat = false; 
-		}
+		} while (repeat);
 		houseNumber.sort(null);
 	}
 	
