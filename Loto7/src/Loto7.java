@@ -6,6 +6,9 @@ public class Loto7 {
 	ArrayList yourNumber = new ArrayList();
 	ArrayList houseNumber = new ArrayList();
 	final static int UPPER_BOUND = 36;
+	public int cash = 0;
+	public int loop = 0;
+	public int earning = 0;
 	
 	Random rand = new Random();
 	
@@ -16,11 +19,35 @@ public class Loto7 {
 		 System.out.println("");
 	}
 	
+	public void inputMoney (Scanner scan) {
+		System.out.println("Please deposit the amount of money you want to pay to play the game (one lottery ticket will cost $3): ");
+		boolean repeat = true;
+		do {
+			try {
+				cash = scan.nextInt();
+				loop = cash / 3;
+				if (loop == 0) {
+					System.out.print("With $" + cash + ", you cannot enter the lottery draw. Please deposit an amount larger than $3.");
+					System.out.println("");
+					repeat = true;
+				}
+				else {
+					System.out.print("With $" + cash + ", you can play " + loop +" time(s).\n");
+					repeat = false;
+				}
+			} 
+			catch (Exception e) {
+						System.out.println("Invalid input. Please enter the amount of cash (numbers only).");
+						scan.nextLine();
+						repeat = true;
+					}
+			} while (repeat);
+	}
 	
 	public void inputChoice (Scanner scan) {
-		System.out.println("Do you want to choose 7 numbers by yourself or have the program generate them?");
+		System.out.println("Do you want to choose the lottery numbers by yourself or have the program generate them?");
 		System.out.println("1. I will choose them by myself");
-		System.out.println("2. Please choose them for me");		
+		System.out.println("2. Please generate them for me");		
 		boolean repeat = true;
 		do {
 			try {
@@ -31,12 +58,10 @@ public class Loto7 {
 	            }
 				if (choice == 1) {
 					this.inputNumbers(scan);
-					this.generateHouseNumber();
 					repeat = false;
 				}
 				if (choice == 2) {
 					this.generateYourNumber();
-					this.generateHouseNumber();
 					repeat = false;
 				}
 			} catch (Exception e) {
@@ -120,12 +145,13 @@ public class Loto7 {
 	}
 	
 	public void outputHouseNumber() {
-		System.out.println("...And the winner numbers are: ");
+		System.out.println("The winner numbers are: ");
 		System.out.println(houseNumber);
 		System.out.println("");
 	}
 	
-	public void draw() throws InterruptedException {
+	public void announce() throws InterruptedException {
+		this.outputYourNumber();
 		Thread.sleep(1000);
 		System.out.println("Now's the time for the drawing!");
 		Thread.sleep(1000);
@@ -134,31 +160,53 @@ public class Loto7 {
 		System.out.println("2");
 		Thread.sleep(1000);
 		System.out.println("1");
-		Thread.sleep(1000);
+		Thread.sleep(1000);	
 	}
 	
 	public void match() {
-		houseNumber.retainAll(yourNumber);
-		System.out.print("You have matched total of " + houseNumber.size() + " numbers: ");
-		System.out.println(houseNumber);
-		if (houseNumber.size() == 6) {
-			System.out.println("Congratulations! You won first prize of $6,000,000!");
+		for (int i = 0; i < loop; i++) {
+			System.out.println("Ballot number " + (i+1) + ":");
+			this.generateHouseNumber();
+			this.outputHouseNumber();
+			houseNumber.retainAll(yourNumber);
+			System.out.print("You have matched total of " + houseNumber.size() + " numbers: ");
+			System.out.println(houseNumber);
+			if (houseNumber.size() == 6) {
+				System.out.println("Congratulations! You won first prize of $6,000,000!");
+				earning = earning + 6000000;
+				System.out.println("");
+			}
+			else if (houseNumber.size() == 5) {
+				System.out.println("Congratulations! You won second prize of $72,800!");
+				earning = earning + 72800;
+				System.out.println("");
+			}
+			else if (houseNumber.size() == 4) {
+				System.out.println("Congratulations! You won third prize of $7,280!");
+				earning = earning + 7280;
+				System.out.println("");
+			}
+			else if (houseNumber.size() == 3) {
+				System.out.println("Congratulations! You won fourth prize of $91!");
+				earning = earning + 91;
+				System.out.println("");
+			}
+			else if (houseNumber.size() == 2) {
+				System.out.println("Congratulations! You won fifth prize of $14!");
+				earning = earning + 14;
+				System.out.println("");
+			}
+			else {
+				System.out.println("Sorry! Better luck next time!");
+				System.out.println("");	
+			}
+			houseNumber.clear();
 		}
-		else if (houseNumber.size() == 5) {
-			System.out.println("Congratulations! You won second prize of $72,800!");
-		}
-		else if (houseNumber.size() == 4) {
-			System.out.println("Congratulations! You won third prize of $7,280!");
-		}
-		else if (houseNumber.size() == 3) {
-			System.out.println("Congratulations! You won fourth prize of $91!");
-		}
-		else if (houseNumber.size() == 2) {
-			System.out.println("Congratulations! You won fifth prize of $14!");
-		}
-		else {
-			System.out.println("Sorry! Better luck next time!");
-			System.out.println("Thank you for playing Loto 7.");
-		}
+		if (earning >0) {
+			System.out.println("Congratulations! You won the total prize of: $" + earning);
+		} else {
+			System.out.println("You have not won any prizes, but do not get discouraged! Better luck next time!");
+		}	
+		System.out.println("Thank you for playing Loto 7.");
 	}
 }
