@@ -17,5 +17,4 @@ Introduced other prizes (1 to 6):
 6th prize: match 2/7 numbers - $3  
 - Version 1.4:
 Added the function to let the user play as many times as they like, based on the amount of money they put in. (A ticket will cost $3)
-- Version 1.5:
-Added GUI
+
